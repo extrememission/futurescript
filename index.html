@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FutureScript</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Fonts and Material Icons -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --accent: #fbbf24;
+      --bg: #f8fafc;
+      --panel: #fff;
+      --border: #e0e0e0;
+      --text: #1e293b;
+      --muted: #64748b;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .container {
+      display: flex;
+      flex: 1 1 0;
+      min-height: 100vh;
+    }
+    .left, .right {
+      padding: 2rem 1.5rem;
+      box-sizing: border-box;
+      background: var(--panel);
+    }
+    .left {
+      flex: 1 1 50%;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      min-width: 340px;
+    }
+    .right {
+      flex: 1 1 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-width: 340px;
+    }
+    h1 {
+      font-weight: 500;
+      letter-spacing: -1px;
+      margin-top: 0;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+    .tagline {
+      font-size: 1.1em;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .choose-factor {
+      margin-bottom: 2rem;
+    }
+    .factor-list {
+      display: flex;
+      gap: 1.5em;
+      flex-wrap: wrap;
+      margin-top: 1em;
+    }
+    .factor-btn {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 1em 1.2em;
+      font-size: 1.1em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3em;
+      cursor: pointer;
+      transition: border 0.2s, background 0.2s;
+      min-width: 90px;
+      color: var(--text);
+    }
+    .factor-btn.selected, .factor-btn:hover {
+      border: 2px solid var(--primary);
+      background: #eff6ff;
+    }
+    .material-icons {
+      font-size: 2em;
+      color: var(--primary);
+    }
+    .input-section {
+      margin-bottom: 2.5rem;
+      margin-top: 1.5rem;
+    }
+    .input-section label {
+      font-weight: 500;
+      font-size: 1.08em;
+      margin-bottom: 0.5em;
+      display: block;
+      color: var(--primary);
+    }
+    .input-section input, .input-section textarea, .input-section select {
+      width: 100%;
+      padding: 0.7em;
+      margin-top: 0.3em;
+      margin-bottom: 1em;
+      font-size: 1em;
+      border: 1.5px solid var(--border);
+      border-radius: 5px;
+      background: #f1f5f9;
+      color: var(--text);
+      font-family: inherit;
+      resize: vertical;
+    }
+    .input-section textarea {
+      min-height: 60px;
+      max-height: 140px;
+    }
+    .save-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 0.8em 1.8em;
+      font-size: 1.1em;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 1.5em;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px #0001;
+    }
+    .save-btn:hover {
+      background: #1742a2;
+    }
+    /* Right side */
+    .summary-panel {
+      width: 100%;
+      margin-top: 2.5rem;
+      background: #f1f5f9;
+      border-radius: 10px;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 2px 8px #0001;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .summary-panel .material-icons {
+      vertical-align: middle;
+      color: var(--accent);
+      font-size: 1.5em;
+      margin-right: 0.3em;
+    }
+    .summary-title {
+      font-size: 1.2em;
+      font-weight: 500;
+      margin-bottom: 1em;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+    }
+    .summary-text {
+      font-size: 1.12em;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .reset-btn {
+      background: none;
+      color: var(--muted);
+      border: none;
+      font-size: 1em;
+      margin-top: 1.5em;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+    }
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+      }
+      .left, .right {
+        min-width: 0;
+        width: 100%;
+        padding: 1rem;
+      }
+      .summary-panel {
+        padding: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <h1>
+        <span class="material-icons">auto_awesome</span>
+        FutureScript
+      </h1>
+      <div class="tagline">
+        Choose what you want to create, change, or achieve. We’ll help you map the path forward.
+      </div>
+      <div class="choose-factor">
+        <label for="factor">What do you want to solve for?</label>
+        <div class="factor-list" id="factorList"></div>
+      </div>
+      <form id="futurescriptForm" autocomplete="off"></form>
+    </div>
+    <div class="right">
+      <div class="summary-panel" id="summaryPanel">
+        <div class="summary-title">
+          <span class="material-icons">insights</span>
+          Your FutureScript
+        </div>
+        <div class="summary-text" id="summaryText">
+          Select a factor and start designing your future!
+        </div>
+      </div>
+      <button class="reset-btn" id="resetBtn" style="display:none;">Start Over</button>
+    </div>
+  </div>
+  <script>
+    // CTFAR factor definitions
+    const factors = [
+      {
+        key: 'circumstance',
+        label: 'Circumstance',
+        icon: 'public',
+        prompt: 'What is the situation or fact you want to create in your future?',
+        placeholder: 'e.g., I am living in a new city'
+      },
+      {
+        key: 'thought',
+        label: 'Thought',
+        icon: 'psychology',
+        prompt: 'What belief or idea do you want to have guiding you?',
+        placeholder: 'e.g., I am capable of achieving my goals'
+      },
+      {
+        key: 'feeling',
+        label: 'Feeling',
+        icon: 'favorite',
+        prompt: 'What emotion do you want to experience as you move forward? (one word)',
+        placeholder: 'e.g., Confident'
+      },
+      {
+        key: 'action',
+        label: 'Action',
+        icon: 'directions_run',
+        prompt: 'What action or habit do you want to take regularly?',
+        placeholder: 'e.g., Work out every day'
+      },
+      {
+        key: 'result',
+        label: 'Result',
+        icon: 'emoji_events',
+        prompt: 'What outcome or achievement do you want to see in your future?',
+        placeholder: 'e.g., I have completed a marathon'
+      }
+    ];
+
+    // Prompts for the other factors, depending on what is being solved for
+    const promptMatrix = {
+      circumstance: [
+        { key: 'thought', label: 'Thought', prompt: 'What thought will help you create this circumstance?', placeholder: 'e.g., I can make this happen' },
+        { key: 'feeling', label: 'Feeling', prompt: 'What feeling will drive you toward this circumstance?', placeholder: 'e.g., Determined' },
+        { key: 'action', label: 'Action', prompt: 'What action can you take to bring this circumstance about?', placeholder: 'e.g., Apply for jobs in a new city' },
+        { key: 'result', label: 'Result', prompt: 'What result will show this circumstance has become real?', placeholder: 'e.g., I have moved to a new city' }
+      ],
+      thought: [
+        { key: 'circumstance', label: 'Circumstance', prompt: 'What situation or context do you want to have this thought about?', placeholder: 'e.g., Starting a new project' },
+        { key: 'feeling', label: 'Feeling', prompt: 'What feeling would this thought create for you?', placeholder: 'e.g., Confident' },
+        { key: 'action', label: 'Action', prompt: 'When you feel that way, what action will you take?', placeholder: 'e.g., Take initiative and ask questions' },
+        { key: 'result', label: 'Result', prompt: 'What result will those actions create?', placeholder: 'e.g., I successfully launch the project' }
+      ],
+      feeling: [
+        { key: 'circumstance', label: 'Circumstance', prompt: 'In what situation do you want to feel this way?', placeholder: 'e.g., Giving a presentation' },
+        { key: 'thought', label: 'Thought', prompt: 'What thought would generate this feeling?', placeholder: 'e.g., I am well-prepared' },
+        { key: 'action', label: 'Action', prompt: 'What action will you take when you feel this way?', placeholder: 'e.g., Speak confidently and engage the audience' },
+        { key: 'result', label: 'Result', prompt: 'What result will come from these actions?', placeholder: 'e.g., The audience is engaged and I feel proud' }
+      ],
+      action: [
+        { key: 'circumstance', label: 'Circumstance', prompt: 'What situation or context will you take this action in?', placeholder: 'e.g., My daily routine' },
+        { key: 'thought', label: 'Thought', prompt: 'What thought will make this action easy and natural?', placeholder: 'e.g., My health is a priority' },
+        { key: 'feeling', label: 'Feeling', prompt: 'What feeling will drive this action?', placeholder: 'e.g., Motivated' },
+        { key: 'result', label: 'Result', prompt: 'What result will this action create?', placeholder: 'e.g., I am healthier and stronger' }
+      ],
+      result: [
+        { key: 'circumstance', label: 'Circumstance', prompt: 'What situation or context will this result appear in?', placeholder: 'e.g., After months of training' },
+        { key: 'thought', label: 'Thought', prompt: 'What thought will help you achieve this result?', placeholder: 'e.g., I can do hard things' },
+        { key: 'feeling', label: 'Feeling', prompt: 'What feeling will fuel your progress toward this result?', placeholder: 'e.g., Determined' },
+        { key: 'action', label: 'Action', prompt: 'What action will make this result possible?', placeholder: 'e.g., Train consistently' }
+      ]
+    };
+
+    // State
+    let selectedFactor = null;
+    let userEntries = {};
+
+    // Render factor selection
+    function renderFactorList() {
+      const list = document.getElementById('factorList');
+      list.innerHTML = '';
+      factors.forEach(f => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'factor-btn' + (selectedFactor === f.key ? ' selected' : '');
+        btn.innerHTML = `<span class="material-icons">${f.icon}</span>${f.label}`;
+        btn.onclick = () => {
+          selectedFactor = f.key;
+          userEntries = {};
+          renderForm();
+          renderSummary();
+          renderFactorList();
+        };
+        list.appendChild(btn);
+      });
+    }
+
+    // Render dynamic form
+    function renderForm() {
+      const form = document.getElementById('futurescriptForm');
+      form.innerHTML = '';
+      if (!selectedFactor) return;
+
+      // Main "solve for" factor
+      const main = factors.find(f => f.key === selectedFactor);
+      form.appendChild(createInputSection(main.key, main.label, main.prompt, main.placeholder, true));
+
+      // Other factors
+      promptMatrix[selectedFactor].forEach(f => {
+        form.appendChild(createInputSection(f.key, f.label, f.prompt, f.placeholder));
+      });
+
+      // Save button
+      const saveBtn = document.createElement('button');
+      saveBtn.className = 'save-btn';
+      saveBtn.type = 'button';
+      saveBtn.textContent = 'See My FutureScript';
+      saveBtn.onclick = (e) => {
+        e.preventDefault();
+        renderSummary(true);
+      };
+      form.appendChild(saveBtn);
+    }
+
+    // Create input section
+    function createInputSection(key, label, prompt, placeholder, focus) {
+      const div = document.createElement('div');
+      div.className = 'input-section';
+      const lbl = document.createElement('label');
+      lbl.htmlFor = key + '-input';
+      lbl.textContent = label;
+      div.appendChild(lbl);
+
+      const small = document.createElement('div');
+      small.style.fontSize = '0.97em';
+      small.style.color = 'var(--muted)';
+      small.style.marginBottom = '0.3em';
+      small.textContent = prompt;
+      div.appendChild(small);
+
+      let input;
+      if (key === 'feeling') {
+        input = document.createElement('input');
+        input.type = 'text';
+        input.maxLength = 20;
+      } else if (key === 'action' || key === 'result' || key === 'circumstance' || key === 'thought') {
+        input = document.createElement('textarea');
+        input.rows = 2;
+        input.maxLength = 120;
+      }
+      input.id = key + '-input';
+      input.placeholder = placeholder;
+      input.value = userEntries[key] || '';
+      input.oninput = () => {
+        userEntries[key] = input.value;
+        renderSummary();
+      };
+      if (focus) setTimeout(() => input.focus(), 100);
+      div.appendChild(input);
+      return div;
+    }
+
+    // Render summary
+    function renderSummary(finish = false) {
+      const summaryPanel = document.getElementById('summaryPanel');
+      const summaryText = document.getElementById('summaryText');
+      const resetBtn = document.getElementById('resetBtn');
+      if (!selectedFactor) {
+        summaryText.textContent = 'Select a factor and start designing your future!';
+        resetBtn.style.display = 'none';
+        return;
+      }
+      // Check if all fields filled
+      const allKeys = [selectedFactor, ...promptMatrix[selectedFactor].map(f => f.key)];
+      const allFilled = allKeys.every(k => (userEntries[k] || '').trim().length > 0);
+
+      if (!allFilled && !finish) {
+        summaryText.innerHTML = `<span style="color:var(--muted);">Fill in all fields on the left to see your FutureScript summary here.</span>`;
+        resetBtn.style.display = 'none';
+        return;
+      }
+      // Build summary sentence
+      const entries = {};
+      allKeys.forEach(k => entries[k] = (userEntries[k] || '').trim());
+
+      // Compose summary sentence depending on factor
+      let sentence = '';
+      if (selectedFactor === 'circumstance') {
+        sentence = `You're aiming to create the circumstance: <b>${entries.circumstance}</b>. To make this happen, you'll choose the thought "<b>${entries.thought}</b>", which will generate the feeling "<b>${entries.feeling}</b>". This feeling will drive you to take the action "<b>${entries.action}</b>", leading to the result "<b>${entries.result}</b>".`;
+      } else if (selectedFactor === 'thought') {
+        sentence = `By intentionally choosing the thought "<b>${entries.thought}</b>" about the circumstance "<b>${entries.circumstance}</b>", you'll create the feeling "<b>${entries.feeling}</b>", which will inspire you to take the action "<b>${entries.action}</b>", resulting in "<b>${entries.result}</b>".`;
+      } else if (selectedFactor === 'feeling') {
+        sentence = `You want to feel "<b>${entries.feeling}</b>" in the circumstance "<b>${entries.circumstance}</b>". To generate this feeling, you'll practice the thought "<b>${entries.thought}</b>". This feeling will lead you to take the action "<b>${entries.action}</b>", which will produce the result "<b>${entries.result}</b>".`;
+      } else if (selectedFactor === 'action') {
+        sentence = `Your goal is to take the action "<b>${entries.action}</b>" in the circumstance "<b>${entries.circumstance}</b>". The thought "<b>${entries.thought}</b>" will create the feeling "<b>${entries.feeling}</b>", making this action natural and sustainable. This will lead to the result "<b>${entries.result}</b>".`;
+      } else if (selectedFactor === 'result') {
+        sentence = `You're aiming for the result "<b>${entries.result}</b>" in the circumstance "<b>${entries.circumstance}</b>". To get there, you'll think "<b>${entries.thought}</b>", which will generate the feeling "<b>${entries.feeling}</b>" and drive you to take the action "<b>${entries.action}</b>".`;
+      }
+      sentence += `<br><br><span style="color:var(--accent);font-weight:500;">This is your FutureScript—your plan for creating the future you want.</span>`;
+      summaryText.innerHTML = sentence;
+      resetBtn.style.display = 'inline-block';
+    }
+
+    // Reset everything
+    document.getElementById('resetBtn').onclick = () => {
+      selectedFactor = null;
+      userEntries = {};
+      renderFactorList();
+      renderForm();
+      renderSummary();
+    };
+
+    // Initial render
+    renderFactorList();
+    renderForm();
+    renderSummary();
+  </script>
+</body>
+</html>
