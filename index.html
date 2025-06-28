@@ -127,7 +127,7 @@
     }
     .input-section textarea {
       min-height: 60px;
-      max-height: 140px;
+      max-height: 240px;
     }
     .save-btn {
       background: var(--primary);
@@ -376,11 +376,11 @@
       if (key === 'feeling') {
         input = document.createElement('input');
         input.type = 'text';
-        input.maxLength = 20;
+        // No maxlength for feeling
       } else if (key === 'action' || key === 'result' || key === 'circumstance' || key === 'thought') {
         input = document.createElement('textarea');
         input.rows = 2;
-        input.maxLength = 120;
+        // No maxlength for textarea
       }
       input.id = key + '-input';
       input.placeholder = placeholder;
